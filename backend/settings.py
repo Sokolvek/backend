@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend'
+    'backend',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -77,14 +78,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = { 
     'default': { 
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'sseu_shop', 
+        'NAME': 'railway', 
         'USER': 'root', 
-        'PASSWORD': 'root', 
-        'HOST': '127.0.0.1', 
-        'PORT': '3306', 
-        'OPTIONS': { 
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'" 
-        } 
+        'PASSWORD': 'Ch2H3dCe4f65H1Cc3egF3cBABEd1EGdc', 
+        'HOST': 'monorail.proxy.rlwy.net', 
+        'PORT': '32806', 
+        # 'OPTIONS': { 
+        #     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'" 
+        # } 
     } 
 } 
 
@@ -107,7 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 

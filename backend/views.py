@@ -1,7 +1,13 @@
 from models import User, Product
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import authenticate, login
+# from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from django import forms
+
 import json
 import codecs
 
@@ -13,32 +19,47 @@ def all_users(request):
     users = User.objects.all().values()  # Получаем все записи пользователей в виде словарей
     return JsonResponse(list(users), safe=False)
 
-def add_user(request):
-    data = json.loads(codecs.decode(request.body, 'unicode_escape'))
-    
-    email = data['email']
-    
-    # Проверка наличия пользователя с указанным email
-    if User.objects.filter(email=email).exists():
-        return JsonResponse({'message': 'User with this email already exists'})
-    
-    user = User.objects.create(username=data['username'], password=data['password'], balance=0, email=email)
-    return JsonResponse({'message': 'User created successfully'})
 
+class CreationForm(forms.ModelForm):
+    class Meta:
+        model = User
+        exclude = ["id", "balance"]
+        
+class LoginForm(forms.ModelForm):
+    class Meta:
+        model = User
+        exclude = ["id", "balance", "email"]
+
+def register_view(request):
+    if request.method == 'POST':
+        print("its kinda post")
+        form = CreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+        messages.success(request, 'Registration successful. You can now log in.')
+        # return render(request, 'login.html')
+    else:
+        form = CreationForm()
+    return render(request, 'register.html', {'form': form})
+    
 def login_view(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        user = authenticate(request, email=email, password=password)
-
+        form = LoginForm(request.POST)
+        print(form.data.get("username"),form.data.get("password"))
+        user = authenticate(request, username=form.data.get("username"), password=form.data.get("password"))
+        print(user)
         if user is not None:
             login(request, user)
-            return JsonResponse({'message': 'Login successful'})
-        else:
-            return JsonResponse({'message': 'Invalid username or password'}, status=401)
-
-    return JsonResponse({'message': 'Invalid request method'}, status=400)
+            print("auth")
+            # return redirect('home')
+        # else:
+            
+        
+            # messages.error(request, 'Invalid username or password.')
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form':form})
+    
 def update_user(request, user_id):
     user = get_object_or_404(User, user_id=user_id)
 

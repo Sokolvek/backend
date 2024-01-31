@@ -1,7 +1,7 @@
 from django.db import models
 
 class User(models.Model):
-    user_id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=45)
     password = models.CharField(max_length=45)
     balance = models.IntegerField(null=True)

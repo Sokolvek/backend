@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+  <h2>Логин</h2>
+  <form method="POST">
+    {{form}}
+
+    <button type="submit">Логин</button>
+  </form>
+{% endblock %}

@@ -24,9 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # user
     path('users/', views.all_users, name='all_users'),
-    path('registration/', views.add_user, name="register_user"),
+    path('register/', views.register_view, name="register_user"),
     path('login/', views.login_view),
-    path('add-users/', views.add_user, name='add_user'),
+    # path('add-users/', views.add_user, name='add_user'),
     path('user/<int:user_id>/', views.update_user, name='update_user'),
     path('user-delete/<int:user_id>/', views.delete_user, name='delete_user'),
     # product
